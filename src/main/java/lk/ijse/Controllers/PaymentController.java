@@ -1,4 +1,4 @@
 package lk.ijse.Controllers;
 
-public class PaymentHistory {
+public class PaymentController {
 }
