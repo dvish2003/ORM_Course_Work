@@ -3,12 +3,13 @@ package lk.ijse.Controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class StudentController {
+public class UserController {
 
     @FXML
     private Button btnAdd;
@@ -26,6 +27,9 @@ public class StudentController {
     private Button btnUpdate;
 
     @FXML
+    private ComboBox<?> cmbPosition;
+
+    @FXML
     private TableColumn<?, ?> colAddress;
 
     @FXML
@@ -41,16 +45,19 @@ public class StudentController {
     private TableColumn<?, ?> colName;
 
     @FXML
-    private TableColumn<?, ?> colPhoneNumber;
+    private TableColumn<?, ?> colPhone;
 
     @FXML
-    private TableColumn<?, ?> colStudentID;
+    private TableColumn<?, ?> colPosition;
 
     @FXML
-    private Label lblStudentID;
+    private TableColumn<?, ?> colUserID;
 
     @FXML
-    private TableView<?> tblStudents;
+    private Label lblUserID;
+
+    @FXML
+    private TableView<?> tblUsers;
 
     @FXML
     private TextField txtAddress;
@@ -68,7 +75,10 @@ public class StudentController {
     private TextField txtName;
 
     @FXML
-    private TextField txtPhoneNumber;
+    private TextField txtPassword;
+
+    @FXML
+    private TextField txtPhone;
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
