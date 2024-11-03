@@ -56,13 +56,7 @@ public class StudentController {
     private TextField txtAddress;
 
     @FXML
-    private TextField txtAge;
-
-    @FXML
     private TextField txtEmail;
-
-    @FXML
-    private TextField txtNIC;
 
     @FXML
     private TextField txtName;

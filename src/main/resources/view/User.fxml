@@ -40,7 +40,7 @@
     <TextField fx:id="txtEmail" layoutX="120.0" layoutY="320.0" prefWidth="150.0" />
 
     <Label layoutX="20.0" layoutY="360.0" text="Position:" />
-    <ComboBox fx:id="cmbPosition" layoutX="120.0" layoutY="360.0" prefWidth="150.0">
+    <ComboBox fx:id="cmbPosition" layoutX="120.0" layoutY="360.0" onAction="#cmbPeositionOnAction" prefWidth="150.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Admin" />

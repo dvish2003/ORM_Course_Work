@@ -105,4 +105,9 @@ public class UserController {
 
     }
 
+    @FXML
+    void cmbPeositionOnAction(ActionEvent event) {
+
+    }
+
 }

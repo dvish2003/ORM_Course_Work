@@ -26,20 +26,14 @@
     <Label layoutX="20.0" layoutY="155.0" text="Name:" />
     <TextField fx:id="txtName" layoutX="120.0" layoutY="155.0" prefWidth="150.0" promptText="Enter Name" />
 
-    <Label layoutX="20.0" layoutY="197.0" text="Age:" />
-    <TextField fx:id="txtAge" layoutX="120.0" layoutY="197.0" prefWidth="150.0" promptText="Enter Age" />
+    <Label layoutX="20.0" layoutY="199.0" text="Phone Number:" />
+    <TextField fx:id="txtPhoneNumber" layoutX="120.0" layoutY="199.0" prefWidth="150.0" promptText="Enter Phone Number" />
 
-    <Label layoutX="20.0" layoutY="239.0" text="NIC:" />
-    <TextField fx:id="txtNIC" layoutX="120.0" layoutY="239.0" prefWidth="150.0" promptText="Enter NIC" />
+    <Label layoutX="20.0" layoutY="241.0" text="Email:" />
+    <TextField fx:id="txtEmail" layoutX="120.0" layoutY="241.0" prefWidth="150.0" promptText="Enter Email" />
 
-    <Label layoutX="20.0" layoutY="281.0" text="Phone Number:" />
-    <TextField fx:id="txtPhoneNumber" layoutX="120.0" layoutY="281.0" prefWidth="150.0" promptText="Enter Phone Number" />
-
-    <Label layoutX="20.0" layoutY="323.0" text="Email:" />
-    <TextField fx:id="txtEmail" layoutX="120.0" layoutY="323.0" prefWidth="150.0" promptText="Enter Email" />
-
-    <Label layoutX="20.0" layoutY="365.0" text="Address:" />
-    <TextField fx:id="txtAddress" layoutX="120.0" layoutY="365.0" prefWidth="150.0" promptText="Enter Address" />
+    <Label layoutX="20.0" layoutY="283.0" text="Address:" />
+    <TextField fx:id="txtAddress" layoutX="120.0" layoutY="283.0" prefWidth="150.0" promptText="Enter Address" />
 
     <!-- Action Buttons -->
     <Button fx:id="btnAdd" layoutX="20.0" layoutY="420.0" onAction="#btnAddOnAction" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Add" />
