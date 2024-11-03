@@ -2,15 +2,20 @@ package lk.ijse.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import lk.ijse.BO.Impl.BOFactory;
+import lk.ijse.BO.Impl.UserBOImpl;
+import lk.ijse.BO.UserBO;
+import lk.ijse.DTO.UserDTO;
+import lk.ijse.util.PasswordEncrypt;
+import lk.ijse.util.PasswordVerifier;
+
+import javax.security.auth.kerberos.EncryptionKey;
+import java.sql.SQLException;
 
 public class UserController {
-
+    @FXML
+    private TextField UserID;
     @FXML
     private Button btnAdd;
 
@@ -33,13 +38,7 @@ public class UserController {
     private TableColumn<?, ?> colAddress;
 
     @FXML
-    private TableColumn<?, ?> colAge;
-
-    @FXML
     private TableColumn<?, ?> colEmail;
-
-    @FXML
-    private TableColumn<?, ?> colNIC;
 
     @FXML
     private TableColumn<?, ?> colName;
@@ -53,8 +52,6 @@ public class UserController {
     @FXML
     private TableColumn<?, ?> colUserID;
 
-    @FXML
-    private Label lblUserID;
 
     @FXML
     private TableView<?> tblUsers;
@@ -63,13 +60,7 @@ public class UserController {
     private TextField txtAddress;
 
     @FXML
-    private TextField txtAge;
-
-    @FXML
     private TextField txtEmail;
-
-    @FXML
-    private TextField txtNIC;
 
     @FXML
     private TextField txtName;
@@ -80,14 +71,43 @@ public class UserController {
     @FXML
     private TextField txtPhone;
 
+UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
+
     public void initialize(){
 
     }
 
     @FXML
-    void btnAddOnAction(ActionEvent event) {
+    void btnAddOnAction(ActionEvent event) throws Exception {
 
+    String id = UserID.getText();
+    String name = txtName.getText();
+    String Address = txtAddress.getText();
+    String phone = txtPhone.getText();
+    String email = txtEmail.getText();
+    String Position = String.valueOf(cmbPosition.getValue());
+    String password = txtPassword.getText();
+
+        /*Password encrypt*/
+        String encryptPassword = PasswordEncrypt.hashPassword(password);
+
+    try {
+        if (PasswordVerifier.verifyPassword(password,encryptPassword)){
+            UserDTO userDTO = new UserDTO(id,name,Address,phone,email,Position,encryptPassword);
+
+            boolean isSave = userBO.save(userDTO);
+            if(isSave){
+                new Alert(Alert.AlertType.CONFIRMATION, "User saved successfully!").show();
+
+            }
+        }
+        new Alert(Alert.AlertType.CONFIRMATION, "User not saved successfully!").show();
+
+    } catch (Exception e) {
+        throw new RuntimeException(e);
     }
+    }
+
 
     @FXML
     void btnBackOnAction(ActionEvent event) {
@@ -110,8 +130,6 @@ public class UserController {
     }
 
     @FXML
-    void cmbPeositionOnAction(ActionEvent event) {
-
+    void cmbPositionOnAction(ActionEvent actionEvent) {
     }
-
 }
