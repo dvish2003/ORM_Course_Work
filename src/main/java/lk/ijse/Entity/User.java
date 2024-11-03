@@ -17,8 +17,6 @@ public class User {
     @Id
     private String user_id;
     private String username;
-    private String nic;
-    private String Name;
     private String Address;
     private String user_phone;
     private String user_email;

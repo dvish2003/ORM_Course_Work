@@ -1,4 +1,21 @@
 package lk.ijse.BO.Impl;
 
-public class StudentBOImpl {
+import lk.ijse.BO.StudentBO;
+import lk.ijse.DTO.StudentDTO;
+
+public class StudentBOImpl implements StudentBO {
+    @Override
+    public boolean save(StudentDTO dto) throws Exception {
+        return false;
+    }
+
+    @Override
+    public boolean update(StudentDTO dto) throws Exception {
+        return false;
+    }
+
+    @Override
+    public boolean delete(StudentDTO dto) throws Exception {
+        return false;
+    }
 }

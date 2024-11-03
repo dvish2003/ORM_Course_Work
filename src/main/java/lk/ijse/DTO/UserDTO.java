@@ -11,11 +11,11 @@ import lombok.*;
 @Data
 public class UserDTO {
 
-    private String id;
-    private String name;
-    private String NIC;
-    private String phoneNumber;
-    private String email;
-    private String address;
-    private String position;
+    private String user_id;
+    private String username;
+    private String Address;
+    private String user_phone;
+    private String user_email;
+    private String Position;
+    private String password;
 }

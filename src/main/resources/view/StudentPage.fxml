@@ -42,12 +42,10 @@
     <Button fx:id="btnClear" layoutX="220.0" layoutY="420.0" onAction="#btnClearOnAction" style="-fx-background-color: #607D8B; -fx-text-fill: white;" text="Clear" />
 
     <!-- Table View for Displaying Student Details -->
-    <TableView fx:id="tblStudents" layoutX="300.0" layoutY="38.0" prefHeight="480.0" prefWidth="599.0">
+    <TableView fx:id="tblStudents" layoutX="300.0" layoutY="38.0" prefHeight="480.0" prefWidth="589.0">
         <columns>
             <TableColumn fx:id="colStudentID" prefWidth="75.0" text="Student ID" />
             <TableColumn fx:id="colName" prefWidth="125.0" text="Name" />
-            <TableColumn fx:id="colAge" prefWidth="45.0" text="Age" />
-            <TableColumn fx:id="colNIC" prefWidth="121.0" text="NIC" />
             <TableColumn fx:id="colPhoneNumber" prefWidth="109.0" text="Phone Number" />
             <TableColumn fx:id="colEmail" prefWidth="125.0" text="Email" />
             <TableColumn fx:id="colAddress" prefWidth="150.0" text="Address" />

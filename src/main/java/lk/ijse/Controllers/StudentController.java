@@ -29,13 +29,7 @@ public class StudentController {
     private TableColumn<?, ?> colAddress;
 
     @FXML
-    private TableColumn<?, ?> colAge;
-
-    @FXML
     private TableColumn<?, ?> colEmail;
-
-    @FXML
-    private TableColumn<?, ?> colNIC;
 
     @FXML
     private TableColumn<?, ?> colName;

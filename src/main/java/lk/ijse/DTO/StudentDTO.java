@@ -10,13 +10,10 @@ import lombok.*;
 @ToString
 @Data
 public class StudentDTO {
-
-    private String id;
-    private String name;
-    private int age;
-    private String NIC;
-    private String phoneNumber;
-    private String email;
-    private String address;
+    private String stu_id;
+    private String stu_name;
+    private String stu_phone;
+    private String stu_email;
+    private String stu_address;
 
 }
