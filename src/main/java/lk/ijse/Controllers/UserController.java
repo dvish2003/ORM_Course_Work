@@ -88,6 +88,7 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
     String Position = String.valueOf(cmbPosition.getValue());
     String password = txtPassword.getText();
 
+
         /*Password encrypt*/
         String encryptPassword = PasswordEncrypt.hashPassword(password);
 
