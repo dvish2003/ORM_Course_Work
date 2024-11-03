@@ -3,9 +3,7 @@ package lk.ijse.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -13,6 +11,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Entity
+@Getter
+@Setter
 public class User {
     @Id
     private String user_id;

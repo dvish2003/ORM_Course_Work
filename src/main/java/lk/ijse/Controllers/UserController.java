@@ -80,6 +80,10 @@ public class UserController {
     @FXML
     private TextField txtPhone;
 
+    public void initialize(){
+
+    }
+
     @FXML
     void btnAddOnAction(ActionEvent event) {
 

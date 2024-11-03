@@ -1,9 +1,7 @@
 package lk.ijse.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@Getter
+@Setter
 public class Student_Course {
     @Id
     private String student_course_id;
