@@ -6,6 +6,10 @@ import lk.ijse.DAO.UserDAO;
 import lk.ijse.DTO.UserDTO;
 import lk.ijse.Entity.User;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserBOImpl implements UserBO {
   UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.User);
     @Override
@@ -21,5 +25,20 @@ public class UserBOImpl implements UserBO {
     @Override
     public boolean delete(UserDTO dto) throws Exception {
         return false;
+    }
+
+    @Override
+    public List<UserDTO> getAll() throws SQLException, ClassNotFoundException {
+        List<User> users = userDAO.getAll();
+        List<UserDTO> dtos = new ArrayList<>();
+        for (User user : users) {
+            dtos.add(new UserDTO(user.getUser_id(),user.getUsername(),user.getAddress(),user.getUser_phone(),user.getUser_email(),user.getPosition(),user.getPassword()));
+        }
+        return dtos;
+    }
+
+    @Override
+    public UserDTO searchByIdCustomer(String id) throws SQLException, ClassNotFoundException {
+        return null;
     }
 }

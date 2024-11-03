@@ -1,8 +1,11 @@
 package lk.ijse.Controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.BO.Impl.BOFactory;
 import lk.ijse.BO.Impl.UserBOImpl;
 import lk.ijse.BO.UserBO;
@@ -10,8 +13,8 @@ import lk.ijse.DTO.UserDTO;
 import lk.ijse.util.PasswordEncrypt;
 import lk.ijse.util.PasswordVerifier;
 
-import javax.security.auth.kerberos.EncryptionKey;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserController {
     @FXML
@@ -54,7 +57,7 @@ public class UserController {
 
 
     @FXML
-    private TableView<?> tblUsers;
+    private TableView<UserDTO> tblUsers;
 
     @FXML
     private TextField txtAddress;
@@ -74,39 +77,80 @@ public class UserController {
 UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
 
     public void initialize(){
+        setCellValueFactory();
+        loadAll();
+    }
 
+    private void setCellValueFactory() {
+        colUserID.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("username"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("Address"));
+        colPhone.setCellValueFactory(new PropertyValueFactory<>("user_phone"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("user_email"));
+        colPosition.setCellValueFactory(new PropertyValueFactory<>("Position"));
+
+    }
+
+    private void loadAll() {
+        ObservableList<UserDTO> obList = FXCollections.observableArrayList();
+        try {
+            List<UserDTO> userDTOList = userBO.getAll();
+            for (UserDTO userDTO : userDTOList) {
+                UserDTO tm = new UserDTO(
+                       userDTO.getUser_id(),
+                        userDTO.getUsername(),
+                        userDTO.getAddress(),
+                        userDTO.getUser_phone(),
+                        userDTO.getUser_email(),
+                        userDTO.getPosition(),
+                        userDTO.getPassword()
+                );
+
+                obList.add(tm);
+            }
+
+            tblUsers.setItems(obList);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
-    void btnAddOnAction(ActionEvent event) throws Exception {
+    void btnAddOnAction(ActionEvent event) {
+        try {
+            String id = UserID.getText();
+            String name = txtName.getText();
+            String address = txtAddress.getText();
+            String phone = txtPhone.getText();
+            String email = txtEmail.getText();
+            String position = String.valueOf(cmbPosition.getValue());
+            String password = txtPassword.getText();
 
-    String id = UserID.getText();
-    String name = txtName.getText();
-    String Address = txtAddress.getText();
-    String phone = txtPhone.getText();
-    String email = txtEmail.getText();
-    String Position = String.valueOf(cmbPosition.getValue());
-    String password = txtPassword.getText();
+            String encryptedPassword = PasswordEncrypt.hashPassword(password);
 
 
-        /*Password encrypt*/
-        String encryptPassword = PasswordEncrypt.hashPassword(password);
+            if (PasswordVerifier.verifyPassword(password, encryptedPassword)) {
+                UserDTO userDTO = new UserDTO(id, name, address, phone, email, position, encryptedPassword);
 
-    try {
-        if (PasswordVerifier.verifyPassword(password,encryptPassword)){
-            UserDTO userDTO = new UserDTO(id,name,Address,phone,email,Position,encryptPassword);
 
-            boolean isSave = userBO.save(userDTO);
-            if(isSave){
-                new Alert(Alert.AlertType.CONFIRMATION, "User saved successfully!").show();
+                boolean isSaved = userBO.save(userDTO);
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "User saved successfully!").show();
+                    clear();
 
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "User not saved successfully!").show();
+                }
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Password verification failed!").show();
             }
-        }
-        new Alert(Alert.AlertType.CONFIRMATION, "User not saved successfully!").show();
+        } catch (Exception e) {
 
-    } catch (Exception e) {
-        throw new RuntimeException(e);
-    }
+            new Alert(Alert.AlertType.ERROR, "An error occurred: " + e.getMessage()).show();
+            e.printStackTrace();
+        }
     }
 
 
@@ -117,7 +161,17 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
+    clear();
 
+    }
+
+    private void clear() {
+        UserID.clear();
+        txtName.clear();
+        txtAddress.clear();
+        txtPhone.clear();
+        txtEmail.clear();
+        txtPassword.clear();
     }
 
     @FXML
