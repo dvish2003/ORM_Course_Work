@@ -8,5 +8,5 @@ public interface PaymentBO extends SuperBO {
 
     public boolean update(PaymentDTO dto) throws Exception;
 
-    public boolean delete(PaymentDTO dto)throws Exception;
+    public boolean delete(String ID)throws Exception;
 }

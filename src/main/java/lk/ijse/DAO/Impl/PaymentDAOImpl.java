@@ -18,7 +18,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public boolean delete(Payment entity) throws Exception {
+    public boolean delete(String ID) throws Exception {
         return false;
     }
 

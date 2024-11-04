@@ -19,12 +19,12 @@ public class UserBOImpl implements UserBO {
 
     @Override
     public boolean update(UserDTO dto) throws Exception {
-        return false;
+        return userDAO.update(new User(dto.getUser_id(),dto.getUsername(),dto.getAddress(),dto.getUser_phone(),dto.getUser_email(),dto.getPosition(),dto.getPassword()));
     }
 
     @Override
-    public boolean delete(UserDTO dto) throws Exception {
-        return false;
+    public boolean delete(String ID) throws Exception {
+       return userDAO.delete(ID);
     }
 
     @Override

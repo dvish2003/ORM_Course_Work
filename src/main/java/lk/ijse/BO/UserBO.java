@@ -10,7 +10,7 @@ public interface UserBO extends SuperBO {
 
     public boolean update(UserDTO dto) throws Exception;
 
-    public boolean delete(UserDTO dto)throws Exception;
+    public boolean delete(String ID)throws Exception;
 
     public List<UserDTO> getAll() throws SQLException, ClassNotFoundException;
 

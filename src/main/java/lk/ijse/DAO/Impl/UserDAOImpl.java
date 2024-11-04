@@ -23,12 +23,24 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean update(User entity) throws Exception {
-        return false;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction tx = session.beginTransaction();
+        session.update(entity);
+        tx.commit();
+        session.close();
+        return true;
     }
 
     @Override
-    public boolean delete(User entity) throws Exception {
-        return false;
+    public boolean delete(String ID) throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction tx = session.beginTransaction();
+        User user = new User();
+        user.setUser_id(ID);
+        session.delete(user);
+        tx.commit();
+        session.close();
+        return true;
     }
 
     @Override

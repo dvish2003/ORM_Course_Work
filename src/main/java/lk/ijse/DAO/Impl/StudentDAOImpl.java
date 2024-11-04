@@ -18,7 +18,7 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public boolean delete(Course entity) throws Exception {
+    public boolean delete(String ID) throws Exception {
         return false;
     }
 

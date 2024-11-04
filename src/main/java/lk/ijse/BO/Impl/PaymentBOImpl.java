@@ -15,7 +15,7 @@ public class PaymentBOImpl implements PaymentBO {
     }
 
     @Override
-    public boolean delete(PaymentDTO dto) throws Exception {
+    public boolean delete(String ID) throws Exception {
         return false;
     }
 }

@@ -15,7 +15,7 @@ public class StudentBOImpl implements StudentBO {
     }
 
     @Override
-    public boolean delete(StudentDTO dto) throws Exception {
+    public boolean delete(String ID) throws Exception {
         return false;
     }
 }
