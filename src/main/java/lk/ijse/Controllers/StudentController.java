@@ -5,12 +5,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import lk.ijse.BO.Impl.BOFactory;
+import lk.ijse.BO.StudentBO;
+import lk.ijse.DTO.StudentDTO;
 
 public class StudentController {
 
@@ -62,10 +61,15 @@ public class StudentController {
     @FXML
     private TextField txtPhoneNumber;
 
+    StudentBO studentBO = (StudentBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Student);
+
+    public void initialize(){}
+
     @FXML
     void btnAddOnAction(ActionEvent event) {
 
     }
+
 
     @FXML
     void btnBackOnAction(ActionEvent event) {

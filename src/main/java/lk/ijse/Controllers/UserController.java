@@ -183,6 +183,7 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     @FXML
