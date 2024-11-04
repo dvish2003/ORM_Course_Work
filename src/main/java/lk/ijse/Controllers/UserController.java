@@ -4,8 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import lk.ijse.BO.Impl.BOFactory;
 import lk.ijse.BO.Impl.UserBOImpl;
 import lk.ijse.BO.UserBO;
@@ -169,7 +173,16 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
 
     @FXML
     void btnBackOnAction(ActionEvent event) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/DashBoard.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) btnBack.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.centerOnScreen();
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
