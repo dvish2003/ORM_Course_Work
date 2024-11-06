@@ -1,7 +1,7 @@
-package lk.ijse.DAO.Impl;
+package lk.ijse.DAO.Impl.Custom;
 
-import lk.ijse.DAO.UserDAO;
-import lk.ijse.Entity.User;
+import lk.ijse.DAO.Impl.CourseDAO;
+import lk.ijse.Entity.Course;
 import lk.ijse.config.FactoryConfiguration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -10,19 +10,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements UserDAO {
+public class CourseDAOImpl implements CourseDAO {
     @Override
-    public boolean save(User entity) throws Exception {
+    public boolean save(Course entity) throws Exception {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction tx = session.beginTransaction();
         session.save(entity);
         tx.commit();
         session.close();
         return true;
-        }
+
+    }
 
     @Override
-    public boolean update(User entity) throws Exception {
+    public boolean update(Course entity) throws Exception {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction tx = session.beginTransaction();
         session.update(entity);
@@ -35,52 +36,68 @@ public class UserDAOImpl implements UserDAO {
     public boolean delete(String ID) throws Exception {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction tx = session.beginTransaction();
-        User user = new User();
-        user.setUser_id(ID);
-        session.delete(user);
+        Course course = new Course();
+        course.setCourse_id(ID);
+        session.delete(course);
         tx.commit();
         session.close();
         return true;
     }
 
     @Override
-    public List<User> getAll() throws SQLException, ClassNotFoundException {
-        List<User> all = new ArrayList<>();
+    public List<Course> getAll() throws SQLException, ClassNotFoundException {
+        List<Course> all = new ArrayList<>();
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-        all = session.createQuery("from User").list();
+        all = session.createQuery("from Course").list();
         transaction.commit();
         session.close();
         return all;
     }
 
     @Override
-    public User searchByIdCustomer(String id) throws SQLException, ClassNotFoundException {
-        Session session = FactoryConfiguration.getInstance().getSession();
-        Transaction transaction = session.beginTransaction();
-        User user = session.get(User.class, id);
-        transaction.commit();
-        session.close();
-        return user;
+    public Course searchByIdUser(String id) throws SQLException, ClassNotFoundException {
+        return null;
     }
     @Override
-    public User searchByUsername(String username) {
+    public String generateNextId() throws SQLException, ClassNotFoundException {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-        User user = null;
+        String nextId = "";
 
         try {
-            user = session.createQuery("FROM User WHERE username = :username", User.class)
-                    .setParameter("username", username)
-                    .uniqueResult();
+            Object item = session.createQuery("SELECT course_id FROM Course ORDER BY course_id DESC").setMaxResults(1).uniqueResult();
+
+            if (item != null) {
+                String itemCode = item.toString();
+
+
+                if (itemCode.startsWith("C") && itemCode.length() > 1) {
+
+                    int idNum = Integer.parseInt(itemCode.substring(1));
+                    nextId = "C" + String.format("%03d", ++idNum);
+                } else {
+
+                    nextId = "C001";
+                }
+            } else {
+                nextId = "C001";
+            }
+
             transaction.commit();
         } catch (Exception e) {
-            transaction.rollback();
+            if (transaction != null) transaction.rollback();
             e.printStackTrace();
         } finally {
             session.close();
         }
 
-        return user;
+        return nextId;
     }
+
+    @Override
+    public List<String> getIds() {
+        return List.of();
+    }
+
 }

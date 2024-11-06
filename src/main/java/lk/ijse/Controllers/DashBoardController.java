@@ -23,6 +23,9 @@ public class DashBoardController {
     @FXML
     private Button btnUsers;
 
+    public void initialize(){
+
+    }
     @FXML
     void btnCourseOnAction(ActionEvent event) {
         try {
@@ -106,4 +109,9 @@ public class DashBoardController {
             e.printStackTrace();
         }
     }
+/*    public void setUserId(String userId) throws Exception {
+        StudentController studentController = new StudentController();
+        studentController.lblUserID(userId);
+    }*/
+
 }

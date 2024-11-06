@@ -1,6 +1,6 @@
-package lk.ijse.DAO.Impl;
+package lk.ijse.DAO.Impl.Custom;
 
-import lk.ijse.DAO.Student_CourseDAO;
+import lk.ijse.DAO.Impl.Student_CourseDAO;
 import lk.ijse.Entity.Student_Course;
 
 import java.sql.SQLException;
@@ -28,7 +28,16 @@ public class Student_CourseDAOImpl implements Student_CourseDAO {
     }
 
     @Override
-    public Student_Course searchByIdCustomer(String id) throws SQLException, ClassNotFoundException {
+    public Student_Course searchByIdUser(String id) throws SQLException, ClassNotFoundException {
         return null;
+    }
+    @Override
+    public String generateNextId() throws SQLException, ClassNotFoundException {
+        return "";
+    }
+
+    @Override
+    public List<String> getIds() {
+        return List.of();
     }
 }

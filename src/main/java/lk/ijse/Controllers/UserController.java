@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import lk.ijse.BO.Impl.BOFactory;
+import lk.ijse.BO.BOFactory;
 import lk.ijse.BO.Impl.UserBOImpl;
 import lk.ijse.BO.UserBO;
 import lk.ijse.DTO.UserDTO;
@@ -80,9 +80,10 @@ public class UserController {
 
 UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
 
-    public void initialize(){
+    public void initialize() throws SQLException, ClassNotFoundException {
         setCellValueFactory();
         loadAll();
+        generateNextUserId();
 
         tblUsers.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -95,6 +96,11 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
                 txtPassword.setText(newSelection.getPassword());
             }
         });
+    }
+    private void generateNextUserId() throws SQLException, ClassNotFoundException {
+        String code = userBO.generateNextId();
+        UserID.setText(code);
+
     }
 
     private void setCellValueFactory() {
@@ -166,7 +172,6 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
         } catch (Exception e) {
 
             new Alert(Alert.AlertType.ERROR, "An error occurred: " + e.getMessage()).show();
-            e.printStackTrace();
         }
     }
 
@@ -187,13 +192,13 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
     }
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
     clear();
 
     }
 
-    private void clear() {
-        UserID.clear();
+    private void clear() throws SQLException, ClassNotFoundException {
+        generateNextUserId();
         txtName.clear();
         txtAddress.clear();
         txtPhone.clear();

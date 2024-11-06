@@ -11,12 +11,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lk.ijse.DAO.DAOFactory;
-import lk.ijse.DAO.UserDAO;
+import lk.ijse.DAO.Impl.UserDAO;
 import lk.ijse.Entity.User;
 import lk.ijse.util.PasswordVerifier;
 
 public class LoginController {
-UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.User);
+    UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.User);
+
     @FXML
     private Button btnLogin;
 
@@ -39,16 +40,14 @@ UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType
     }
 
     private void checkCredential(String username, String password, ActionEvent event) throws Exception {
-
         User user = userDAO.searchByUsername(username);
 
         if (user != null) {
 
             if (PasswordVerifier.verifyPassword(password, user.getPassword())) {
-
                 new Alert(Alert.AlertType.CONFIRMATION, "Login successful!").show();
 
-                // Assuming a Dashboard.fxml exists for the dashboard scene
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/DashBoard.fxml"));
                 Parent root = loader.load();
                 Stage stage = (Stage) btnLogin.getScene().getWindow();
