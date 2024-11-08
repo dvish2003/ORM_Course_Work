@@ -28,7 +28,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public Payment searchByIdUser(String id) throws SQLException, ClassNotFoundException {
+    public Payment searchByID(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
     @Override

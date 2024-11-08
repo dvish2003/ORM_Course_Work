@@ -40,4 +40,14 @@ public class CourseBOImpl implements CourseBO {
         }
         return dto;
     }
+
+    @Override
+    public List<String> getIds() {
+        return courseDAO.getIds();
+    }
+
+    @Override
+    public Course searchById(String id) throws SQLException, ClassNotFoundException {
+        return courseDAO.searchByID(id);
+    }
 }

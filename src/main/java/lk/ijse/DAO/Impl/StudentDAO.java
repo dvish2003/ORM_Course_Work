@@ -4,6 +4,8 @@ import lk.ijse.DAO.CrudDAO;
 import lk.ijse.DTO.StudentDTO;
 import lk.ijse.Entity.Student;
 
-public interface StudentDAO extends CrudDAO<Student> {
+import java.sql.SQLException;
 
-}
+public interface StudentDAO extends CrudDAO<Student> {
+    public Student searchByContact(String id) throws SQLException, ClassNotFoundException;
+    }

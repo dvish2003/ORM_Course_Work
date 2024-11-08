@@ -55,7 +55,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User searchByIdUser(String id) throws SQLException, ClassNotFoundException {
+    public User searchByID(String id) throws SQLException, ClassNotFoundException {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         User user = session.get(User.class, id);

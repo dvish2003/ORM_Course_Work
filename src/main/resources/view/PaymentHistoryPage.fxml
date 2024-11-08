@@ -9,11 +9,10 @@
 
 <AnchorPane prefHeight="506.0" prefWidth="831.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.Controllers.PaymentController">
     <children>
-        <TableView fx:id="tblPaymentHistory" layoutX="17.0" layoutY="132.0" prefHeight="358.0" prefWidth="801.0">
+        <TableView fx:id="tblPaymentHistory" layoutX="106.0" layoutY="95.0" prefHeight="359.0" prefWidth="620.0">
             <columns>
                 <TableColumn fx:id="colPayID" prefWidth="101.0" text="ID" />
-                <TableColumn fx:id="colStudentId" prefWidth="148.0" text="Student Id" />
-                <TableColumn fx:id="colCourseName" prefWidth="177.0" text="Course Name" />
+                <TableColumn fx:id="colStudent_courseID" prefWidth="148.0" text="Student_Course ID" />
                 <TableColumn fx:id="colDate" prefWidth="198.0" text="Date" />
                 <TableColumn fx:id="colFee" prefWidth="176.0" text="Course Fee" />
             </columns>

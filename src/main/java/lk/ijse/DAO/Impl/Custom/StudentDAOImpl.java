@@ -1,9 +1,7 @@
 package lk.ijse.DAO.Impl.Custom;
 
 import lk.ijse.DAO.Impl.StudentDAO;
-import lk.ijse.DTO.StudentDTO;
 import lk.ijse.Entity.Student;
-import lk.ijse.Entity.User;
 import lk.ijse.config.FactoryConfiguration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -59,7 +57,8 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public Student searchByIdUser(String id) throws SQLException, ClassNotFoundException {
+    public Student searchByID(String id) throws SQLException, ClassNotFoundException {
+
         return null;
     }
 
@@ -102,7 +101,37 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public List<String> getIds() {
-        return List.of();
+        Session session = null;
+        Transaction transaction = null;
+        List<String> stu_id = new ArrayList<>();
+
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+
+            stu_id = session.createQuery("SELECT s.stu_phone FROM Student s", String.class).list();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return stu_id;
     }
 
+    @Override
+    public Student searchByContact(String id) throws SQLException, ClassNotFoundException {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        Student student = session.createQuery("FROM Student WHERE stu_phone = :stu_phone", Student.class).setParameter("stu_phone",id)
+                .uniqueResult();
+        transaction.commit();
+        session.close();
+        return student;    }
 }

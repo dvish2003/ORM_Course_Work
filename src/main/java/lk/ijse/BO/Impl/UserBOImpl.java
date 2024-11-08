@@ -39,7 +39,7 @@ public class UserBOImpl implements UserBO {
 
     @Override
     public User searchByIdUser(String id) throws SQLException, ClassNotFoundException {
-        return userDAO.searchByIdUser(id);
+        return userDAO.searchByID(id);
     }
 
     @Override

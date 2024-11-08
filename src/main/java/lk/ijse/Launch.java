@@ -13,7 +13,7 @@ public class Launch extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/StudentPage.fxml"))));
+        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/Student_Course.fxml"))));
         stage.centerOnScreen();
         stage.setTitle("ORM POS");
         stage.show();

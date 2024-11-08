@@ -18,4 +18,8 @@ public interface CourseBO extends SuperBO{
     public String generateNextId() throws SQLException, ClassNotFoundException;
 
     public List<CourseDTO> getAll() throws SQLException, ClassNotFoundException;
-}
+
+    List<String> getIds();
+
+    public Course searchById(String id) throws SQLException, ClassNotFoundException;
+    }

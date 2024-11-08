@@ -85,7 +85,7 @@ public class DashBoardController {
     @FXML
     void btnStudentRegisterOnAction(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/StudentRegisteration.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Student_Course.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) btnStudentRegister.getScene().getWindow();
             stage.setScene(new Scene(root));

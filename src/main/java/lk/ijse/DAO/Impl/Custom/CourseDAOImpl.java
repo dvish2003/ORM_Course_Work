@@ -2,6 +2,7 @@ package lk.ijse.DAO.Impl.Custom;
 
 import lk.ijse.DAO.Impl.CourseDAO;
 import lk.ijse.Entity.Course;
+import lk.ijse.Entity.User;
 import lk.ijse.config.FactoryConfiguration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -56,8 +57,14 @@ public class CourseDAOImpl implements CourseDAO {
     }
 
     @Override
-    public Course searchByIdUser(String id) throws SQLException, ClassNotFoundException {
-        return null;
+    public Course searchByID(String id) throws SQLException, ClassNotFoundException {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        Course course = session.createQuery("FROM Course WHERE course_name = :course_name", Course.class).setParameter("course_name",id)
+                .uniqueResult();
+        transaction.commit();
+        session.close();
+        return course;
     }
     @Override
     public String generateNextId() throws SQLException, ClassNotFoundException {
@@ -97,7 +104,28 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public List<String> getIds() {
-        return List.of();
+        Session session = null;
+        Transaction transaction = null;
+        List<String> courseIds = new ArrayList<>();
+
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+
+            courseIds = session.createQuery("SELECT c.course_name FROM Course c", String.class).list();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return courseIds;
     }
 
 }

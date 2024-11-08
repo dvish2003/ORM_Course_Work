@@ -78,4 +78,16 @@ return studentDAO.delete(ID);
         return dtoList;
 
     }
-}
+
+    @Override
+    public List<String> getIds() {
+        return studentDAO.getIds();
+    }
+
+
+    @Override
+    public Student searchByContact(String id) throws SQLException, ClassNotFoundException{
+        return studentDAO.searchByContact(id);
+    }
+
+    }

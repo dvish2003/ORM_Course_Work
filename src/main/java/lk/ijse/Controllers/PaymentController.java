@@ -16,9 +16,6 @@ public class PaymentController {
     private Button btnBack;
 
     @FXML
-    private TableColumn<?, ?> colCourseName;
-
-    @FXML
     private TableColumn<?, ?> colDate;
 
     @FXML
@@ -28,7 +25,7 @@ public class PaymentController {
     private TableColumn<?, ?> colPayID;
 
     @FXML
-    private TableColumn<?, ?> colStudentId;
+    private TableColumn<?, ?> colStudent_courseID;
 
     @FXML
     private TableView<?> tblPaymentHistory;
@@ -48,3 +45,4 @@ public class PaymentController {
     }
 
 }
+
