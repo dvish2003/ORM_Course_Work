@@ -12,7 +12,12 @@ import java.util.List;
 public class Student_CourseDAOImpl implements Student_CourseDAO {
     @Override
     public boolean save(Student_Course entity) throws Exception {
-        return false;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction tx = session.beginTransaction();
+        session.save(entity);
+        tx.commit();
+        session.close();
+        return true;
     }
 
     @Override
@@ -42,22 +47,22 @@ public class Student_CourseDAOImpl implements Student_CourseDAO {
         String nextId = "";
 
         try {
-            Object item = session.createQuery("SELECT student_course_id FROM Student_Course ORDER BY student_course_id DESC").setMaxResults(1).uniqueResult();
+            Object item = session.createQuery("SELECT student_course_id FROM Student_Course ORDER BY student_course_id DESC")
+                    .setMaxResults(1)
+                    .uniqueResult();
 
             if (item != null) {
                 String itemCode = item.toString();
 
-
-                if (itemCode.startsWith("SC") && itemCode.length() > 1) {
-
-                    int idNum = Integer.parseInt(itemCode.substring(1));
+                if (itemCode.startsWith("SC") && itemCode.length() > 2) {
+                    int idNum = Integer.parseInt(itemCode.substring(2));
                     nextId = "SC" + String.format("%03d", ++idNum);
                 } else {
 
                     nextId = "SC001";
                 }
             } else {
-                nextId = "SC001";
+                nextId = "SC001";  // First entry
             }
 
             transaction.commit();

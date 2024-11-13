@@ -7,22 +7,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import lk.ijse.BO.BOFactory;
-import lk.ijse.BO.CourseBO;
-import lk.ijse.BO.PaymentBO;
-import lk.ijse.BO.StudentBO;
+import lk.ijse.BO.*;
+import lk.ijse.BO.Impl.StudentRegisterBOImpl;
+import lk.ijse.DTO.*;
 import lk.ijse.Entity.Course;
 import lk.ijse.Entity.Student;
+import lk.ijse.Entity.User;
 
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -103,12 +100,24 @@ public class StudentRegisterController {
     CourseBO courseBO = (CourseBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Course);
     StudentBO studentBO = (StudentBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Student);
     PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Payment);
+    Student_CourseBO studentCourseBO = (Student_CourseBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Student_Course);
 
 
     public void initialize() throws SQLException, ClassNotFoundException {
         getCourseIds();
         getStudentIds();
+        generateNextId();
         LocalDate();
+    }
+
+    private void generateNextId() throws SQLException, ClassNotFoundException {
+       String PayID = paymentBO.generateNextId();
+       lblPaymentId1.setText(PayID);
+
+       String Student_course = studentCourseBO.generateNextId();
+       lblStudentCourseId1.setText(Student_course);
+
+
     }
 
     private void LocalDate() {
@@ -117,12 +126,70 @@ public class StudentRegisterController {
     }
 
     @FXML
-    void btnAddOnAction(ActionEvent event) {
+    void btnAddOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
+        String contact = cmbStudentPhoneNumber.getValue();
+        String CourseID = lblCourseID.getText();
 
+
+        Student studentDTO = studentBO.searchByContact(contact);
+        if (studentDTO == null) {
+            new Alert(Alert.AlertType.WARNING, "Student not found!").show();
+            return;
+        }
+        StudentDTO student = new StudentDTO(
+                studentDTO.getStu_id(),
+                studentDTO.getStu_name(),
+                studentDTO.getStu_phone(),
+                studentDTO.getStu_email(),
+                studentDTO.getStu_address(),
+                new UserDTO()
+        );
+
+
+        Course courseDTO = courseBO.searchById(CourseID);
+        if (courseDTO == null) {
+            new Alert(Alert.AlertType.WARNING, "Course not found!").show();
+            return;
+        }
+        CourseDTO course = new CourseDTO(
+                courseDTO.getCourse_id(),
+                courseDTO.getCourse_name(),
+                courseDTO.getDuration(),
+                courseDTO.getCourse_fee()
+        );
+
+        String Student_courseID = lblStudentCourseId1.getText();
+        String PaymentID = lblPaymentId1.getText();
+        double Fee = Double.parseDouble(lblFee1.getText());
+        Date date = Date.valueOf(lblDate1.getText());
+
+        Student_CourseDTO studentCourseDTO = new Student_CourseDTO(Student_courseID, student, course, date);
+        PaymentDTO paymentDTO = new PaymentDTO(PaymentID, date, Fee, studentCourseDTO);
+
+        StudentRegisterPlaceDTO studentRegisterPlaceDTO = new StudentRegisterPlaceDTO(studentCourseDTO, paymentDTO);
+
+        boolean isRegister = StudentRegisterBOImpl.StudentRegisterPlace(studentRegisterPlaceDTO);
+        if (isRegister) {
+            clear();
+            new Alert(Alert.AlertType.CONFIRMATION, "Successfully Registered").show();
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Registration Unsuccessful!").show();
+        }
     }
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
+         clear();
+    }
+
+    private void clear() throws SQLException, ClassNotFoundException {
+        cmbStudentPhoneNumber.getSelectionModel().clearSelection();
+        cmbCourseName.getSelectionModel().clearSelection();
+        lblCourseID.setText("");
+        lblFee1.setText("");
+        lblStudentID.setText("");
+        lblDuration.setText("");
+        generateNextId();
 
     }
 
@@ -140,7 +207,7 @@ public class StudentRegisterController {
     void cmbCourseOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String CourseName = cmbCourseName.getValue();
  try {
-     Course course = courseBO.searchById(CourseName);
+     Course course = courseBO.searchByName(CourseName);
      if (course != null){
          lblCourseID.setText(course.getCourse_id());
          lblFee1.setText(String.valueOf(course.getCourse_fee()));

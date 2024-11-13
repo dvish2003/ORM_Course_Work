@@ -50,4 +50,9 @@ public class CourseBOImpl implements CourseBO {
     public Course searchById(String id) throws SQLException, ClassNotFoundException {
         return courseDAO.searchByID(id);
     }
+
+    @Override
+    public Course searchByName(String courseName) throws SQLException, ClassNotFoundException {
+        return courseDAO.searchByName(courseName);
+    }
 }
