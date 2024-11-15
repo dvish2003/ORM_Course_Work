@@ -1,6 +1,7 @@
 package lk.ijse.DAO.Impl.Custom;
 
 import lk.ijse.DAO.Impl.PaymentDAO;
+import lk.ijse.Entity.Course;
 import lk.ijse.Entity.Payment;
 import lk.ijse.config.FactoryConfiguration;
 import org.hibernate.Session;
@@ -37,7 +38,27 @@ return true;
 
     @Override
     public Payment searchByID(String id) throws SQLException, ClassNotFoundException {
-        return null;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+
+        Payment payment;
+        try {
+            payment = session.createQuery(
+                            "FROM Payment p WHERE p.student_course.student_course_id = :studentCourseId", Payment.class)
+                    .setParameter("studentCourseId", id)
+                    .uniqueResult();
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            throw e;
+        } finally {
+            session.close();
+        }
+        return payment;
     }
     @Override
     public String generateNextId() throws SQLException, ClassNotFoundException {

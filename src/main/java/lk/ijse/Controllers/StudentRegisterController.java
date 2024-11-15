@@ -8,18 +8,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import lk.ijse.BO.*;
 import lk.ijse.BO.Impl.StudentRegisterBOImpl;
+import lk.ijse.DAO.DAOFactory;
 import lk.ijse.DTO.*;
 import lk.ijse.Entity.Course;
+import lk.ijse.Entity.Payment;
 import lk.ijse.Entity.Student;
-import lk.ijse.Entity.User;
 
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -95,19 +96,83 @@ public class StudentRegisterController {
     private Label lblStudentID;
 
     @FXML
-    private TableView<?> tblStudentCourse;
+    private TableView<Student_CourseDTO> tblStudentCourse;
 
     CourseBO courseBO = (CourseBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Course);
     StudentBO studentBO = (StudentBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Student);
     PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Payment);
     Student_CourseBO studentCourseBO = (Student_CourseBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Student_Course);
 
-
     public void initialize() throws SQLException, ClassNotFoundException {
+        LoadAllData();
+        SetCellValue();
         getCourseIds();
         getStudentIds();
         generateNextId();
         LocalDate();
+
+        tblStudentCourse.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                try {
+                    Payment payment = paymentBO.searchById(newSelection.getStudent_course_id());
+
+                    if (payment != null) {
+                        lblPaymentId1.setText(payment.getPay_id());
+                    } else {
+
+                        lblPaymentId1.setText("No Payment Found");
+                    }
+
+                    lblCourseID.setText(newSelection.getCourse().getCourse_id());
+                    lblStudentCourseId1.setText(newSelection.getStudent_course_id());
+                    lblStudentID.setText(newSelection.getStudent().getStu_id());
+                    cmbCourseName.setValue(newSelection.getCourse().getCourse_name());
+                    cmbStudentPhoneNumber.setValue(newSelection.getStudent().getStu_phone());
+
+                } catch (SQLException e) {
+                    throw new RuntimeException("Database Error: " + e.getMessage(), e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException("Class Not Found: " + e.getMessage(), e);
+                }
+            }
+        });
+
+    }
+    private void LoadAllData() {
+        ObservableList<Student_CourseDTO> obList = FXCollections.observableArrayList();
+        try {
+            List<Student_CourseDTO> joinList = studentCourseBO.getAll();
+
+            if (joinList != null) {
+                for (Student_CourseDTO SC_LIST : joinList) {
+                    Student_CourseDTO tm = new Student_CourseDTO(
+                            SC_LIST.getStudent_course_id(),
+                            SC_LIST.getStudent(),
+                            SC_LIST.getCourse(),
+                            SC_LIST.getRegistration_date()
+                    );
+                    obList.add(tm);
+                }
+            } else {
+                System.out.println("No data returned from getAll() method.");
+            }
+
+            tblStudentCourse.setItems(obList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private void SetCellValue() {
+        colStudentCourseId.setCellValueFactory(new PropertyValueFactory<>("student_course_id"));
+        colStudentId.setCellValueFactory(new PropertyValueFactory<>("student"));
+        colCourseId.setCellValueFactory(new PropertyValueFactory<>("course"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("registration_date"));
     }
 
     private void generateNextId() throws SQLException, ClassNotFoundException {

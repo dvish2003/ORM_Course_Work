@@ -18,4 +18,6 @@ public class StudentDTO {
     private String stu_address;
     private UserDTO user;
 
+  /*  public StudentDTO(String stuId, String stuName, String stuPhone, Object o, String stuEmail, String stuAddress, UserDTO userDTO) {
+    }*/
 }

@@ -1,12 +1,14 @@
 package lk.ijse.DAO.Impl.Custom;
 
 import lk.ijse.DAO.Impl.Student_CourseDAO;
+import lk.ijse.Entity.Student;
 import lk.ijse.Entity.Student_Course;
 import lk.ijse.config.FactoryConfiguration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Student_CourseDAOImpl implements Student_CourseDAO {
@@ -33,7 +35,13 @@ public class Student_CourseDAOImpl implements Student_CourseDAO {
     @Override
     public List<Student_Course> getAll() throws SQLException, ClassNotFoundException {
 
-        return List.of();
+        List<Student_Course> all = new ArrayList<>();
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        all = session.createQuery("from Student_Course").list();
+        transaction.commit();
+        session.close();
+        return all;
     }
 
     @Override
@@ -62,7 +70,7 @@ public class Student_CourseDAOImpl implements Student_CourseDAO {
                     nextId = "SC001";
                 }
             } else {
-                nextId = "SC001";  // First entry
+                nextId = "SC001";
             }
 
             transaction.commit();

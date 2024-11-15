@@ -39,6 +39,11 @@ PaymentDAO paymentDAO = (PaymentDAO) DAOFactory.getDaoFactory().getDAO(DAOFactor
     public boolean delete(String ID) throws Exception {
         return false;
     }
+    @Override
+    public Payment searchById(String id) throws SQLException, ClassNotFoundException {
+        return paymentDAO.searchByID(id);
+    }
+
     public String generateNextId() throws SQLException, ClassNotFoundException {
         return paymentDAO.generateNextId();
     }
