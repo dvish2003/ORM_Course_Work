@@ -21,6 +21,9 @@ import lk.ijse.DAO.Impl.UserDAO;
 import lk.ijse.DTO.StudentDTO;
 import lk.ijse.DTO.UserDTO;
 import lk.ijse.Entity.User;
+import javafx.scene.input.KeyEvent;
+import lk.ijse.util.Regex.Regex;
+
 
 import java.sql.SQLException;
 import java.util.List;
@@ -174,15 +177,19 @@ public class StudentController {
 
 
         StudentDTO studentDTO = new StudentDTO(S_id,S_Name,phone,Email,Address,userDTO);
-        boolean isSave = studentBO.save(studentDTO);
 
-        if (isSave){
-            new Alert(Alert.AlertType.CONFIRMATION, "User saved successfully!").show();
-            clear();
-            loadAll();
-            generateNextId();
+        if(isValied()){
+            boolean isSave = studentBO.save(studentDTO);
 
-        } else {
+            if (isSave){
+                new Alert(Alert.AlertType.CONFIRMATION, "User saved successfully!").show();
+                clear();
+                loadAll();
+                generateNextId();
+
+            }
+        }
+         else {
             new Alert(Alert.AlertType.ERROR, "User not saved successfully!").show();
         }
     
@@ -252,15 +259,19 @@ clear();
 
 
             StudentDTO studentDTO = new StudentDTO(S_id,S_Name,phone,Email,Address,userDTO);
-            boolean isSave = studentBO.update(studentDTO);
 
-            if (isSave){
-                new Alert(Alert.AlertType.CONFIRMATION, "User update successfully!").show();
-                clear();
-                loadAll();
-                generateNextId();
+            if (isValied()){
+                boolean isSave = studentBO.update(studentDTO);
 
-            } else {
+                if (isSave){
+                    new Alert(Alert.AlertType.CONFIRMATION, "User update successfully!").show();
+                    clear();
+                    loadAll();
+                    generateNextId();
+
+                }
+            }
+             else {
                 new Alert(Alert.AlertType.ERROR, "Student not update successfully!").show();
             }
 
@@ -287,4 +298,37 @@ clear();
             throw new RuntimeException(e);
         }
     }
+
+
+    public boolean isValied(){
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtName)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.ADDRESS,txtAddress)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.EMAIL,txtEmail)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.CONTACT,txtPhoneNumber)) return false;
+
+        return true;
+    }
+
+    @FXML
+    void Address(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.ADDRESS,txtAddress);
+
+    }
+
+    @FXML
+    void Email(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.EMAIL,txtEmail);
+
+    }
+
+    @FXML
+    void Name(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtName);
+    }
+
+    @FXML
+    void Phone(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.CONTACT,txtPhoneNumber);
+    }
+
 }

@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import lk.ijse.BO.BOFactory;
 import lk.ijse.BO.Impl.UserBOImpl;
@@ -16,6 +17,7 @@ import lk.ijse.BO.UserBO;
 import lk.ijse.DTO.UserDTO;
 import lk.ijse.util.PasswordEncrypt;
 import lk.ijse.util.PasswordVerifier;
+import lk.ijse.util.Regex.Regex;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -152,23 +154,25 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
 
             String encryptedPassword = PasswordEncrypt.hashPassword(password);
 
-
+            if (isValied()){
             if (PasswordVerifier.verifyPassword(password, encryptedPassword)) {
                 UserDTO userDTO = new UserDTO(id, name, address, phone, email, position, encryptedPassword);
 
 
-                boolean isSaved = userBO.save(userDTO);
-                if (isSaved) {
-                    new Alert(Alert.AlertType.CONFIRMATION, "User saved successfully!").show();
-                    clear();
-                    loadAll();
+    boolean isSaved = userBO.save(userDTO);
+    if (isSaved) {
+        new Alert(Alert.AlertType.CONFIRMATION, "User saved successfully!").show();
+        clear();
+        loadAll();
+    }
+    } else {
+        new Alert(Alert.AlertType.ERROR, "User not saved successfully!").show();
+    }
+} else {
+    new Alert(Alert.AlertType.ERROR, "Password verification failed!").show();
 
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "User not saved successfully!").show();
-                }
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Password verification failed!").show();
-            }
+}
+
         } catch (Exception e) {
 
             new Alert(Alert.AlertType.ERROR, "An error occurred: " + e.getMessage()).show();
@@ -237,9 +241,7 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
             String password = txtPassword.getText();
 
             String encryptedPassword = PasswordEncrypt.hashPassword(password);
-
-
-            if (PasswordVerifier.verifyPassword(password, encryptedPassword)) {
+            if (isValied()){if (PasswordVerifier.verifyPassword(password, encryptedPassword)) {
                 UserDTO userDTO = new UserDTO(id, name, address, phone, email, position, encryptedPassword);
 
 
@@ -249,7 +251,9 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
                     clear();
                     loadAll();
 
-                } else {
+                }
+            }
+             else {
                     new Alert(Alert.AlertType.ERROR, "User not Update successfully!").show();
                 }
             } else {
@@ -264,5 +268,42 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
 
     @FXML
     void cmbPositionOnAction(ActionEvent actionEvent) {
+    }
+
+
+    public boolean isValied(){
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtName)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.ADDRESS,txtAddress)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.EMAIL,txtEmail)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.CONTACT,txtPhone)) return false;
+
+        return true;
+    }
+
+    @FXML
+    void Address(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.ADDRESS,txtAddress);
+
+    }
+
+    @FXML
+    void Email(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.EMAIL,txtEmail);
+
+    }
+
+    @FXML
+    void Name(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtName);
+    }
+
+    @FXML
+    void Password(KeyEvent event) {
+
+    }
+
+    @FXML
+    void Phone(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.CONTACT,txtPhone);
     }
 }

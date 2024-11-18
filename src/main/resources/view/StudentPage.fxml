@@ -25,16 +25,16 @@
     <Label layoutX="20.0" layoutY="113.0" text="Student ID:" />
 
     <Label layoutX="20.0" layoutY="155.0" text="Name:" />
-    <TextField fx:id="txtName" layoutX="120.0" layoutY="155.0" prefWidth="150.0" promptText="Enter Name" />
+    <TextField fx:id="txtName" layoutX="120.0" layoutY="155.0" onKeyTyped="#Name" prefWidth="150.0" promptText="Enter Name" />
 
     <Label layoutX="20.0" layoutY="199.0" text="Phone Number:" />
-    <TextField fx:id="txtPhoneNumber" layoutX="120.0" layoutY="199.0" prefWidth="150.0" promptText="Enter Phone Number" />
+    <TextField fx:id="txtPhoneNumber" layoutX="120.0" layoutY="199.0" onKeyTyped="#Phone" prefWidth="150.0" promptText="Enter Phone Number" />
 
     <Label layoutX="20.0" layoutY="241.0" text="Email:" />
-    <TextField fx:id="txtEmail" layoutX="120.0" layoutY="241.0" prefWidth="150.0" promptText="Enter Email" />
+    <TextField fx:id="txtEmail" layoutX="120.0" layoutY="241.0" onKeyTyped="#Email" prefWidth="150.0" promptText="Enter Email" />
 
     <Label layoutX="20.0" layoutY="283.0" text="Address:" />
-    <TextField fx:id="txtAddress" layoutX="120.0" layoutY="283.0" prefWidth="150.0" promptText="Enter Address" />
+    <TextField fx:id="txtAddress" layoutX="120.0" layoutY="283.0" onKeyTyped="#Address" prefWidth="150.0" promptText="Enter Address" />
 
     <!-- Action Buttons -->
     <Button fx:id="btnAdd" layoutX="20.0" layoutY="420.0" onAction="#btnAddOnAction" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Add" />

@@ -22,16 +22,16 @@
     <Label layoutX="20.0" layoutY="80.0" text="User ID:" />
 
     <Label layoutX="20.0" layoutY="120.0" text="Name:" />
-    <TextField fx:id="txtName" layoutX="120.0" layoutY="120.0" prefWidth="150.0" />
+    <TextField fx:id="txtName" layoutX="120.0" layoutY="120.0" onKeyTyped="#Name" prefWidth="150.0" />
 
     <Label layoutX="20.0" layoutY="164.0" text="Address:" />
-    <TextField fx:id="txtAddress" layoutX="120.0" layoutY="164.0" prefWidth="150.0" />
+    <TextField fx:id="txtAddress" layoutX="120.0" layoutY="164.0" onKeyTyped="#Address" prefWidth="150.0" />
 
     <Label layoutX="20.0" layoutY="204.0" text="Phone:" />
-    <TextField fx:id="txtPhone" layoutX="120.0" layoutY="204.0" prefWidth="150.0" />
+    <TextField fx:id="txtPhone" layoutX="120.0" layoutY="204.0" onKeyTyped="#Phone" prefWidth="150.0" />
 
     <Label layoutX="20.0" layoutY="244.0" text="Email:" />
-    <TextField fx:id="txtEmail" layoutX="120.0" layoutY="244.0" prefWidth="150.0" />
+    <TextField fx:id="txtEmail" layoutX="120.0" layoutY="244.0" onKeyTyped="#Email" prefWidth="150.0" />
 
     <Label layoutX="20.0" layoutY="284.0" text="Position:" />
     <ComboBox fx:id="cmbPosition" layoutX="120.0" layoutY="284.0" onAction="#cmbPositionOnAction" prefWidth="150.0">
@@ -44,7 +44,7 @@
     </ComboBox>
 
     <Label layoutX="20.0" layoutY="324.0" text="Password:" />
-    <TextField fx:id="txtPassword" layoutX="120.0" layoutY="324.0" prefWidth="150.0" />
+    <TextField fx:id="txtPassword" layoutX="120.0" layoutY="324.0" onKeyTyped="#Password" prefWidth="150.0" />
 
     <!-- Action Buttons -->
     <Button fx:id="btnAdd" layoutX="20.0" layoutY="450.0" onAction="#btnAddOnAction" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Add" />

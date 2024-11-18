@@ -9,11 +9,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import lk.ijse.BO.BOFactory;
 import lk.ijse.BO.CourseBO;
 import lk.ijse.DTO.CourseDTO;
-import lk.ijse.DTO.UserDTO;
+import lk.ijse.util.Regex.Regex;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -121,13 +122,17 @@ public class CourseController {
         double C_FEE = Double.parseDouble(txtCourseFee.getText());
 
         CourseDTO courseDTO = new CourseDTO(C_ID,C_NAME,C_Duration,C_FEE);
-        boolean isSave = courseBO.save(courseDTO);
 
-        if (isSave) {
-            new Alert(Alert.AlertType.CONFIRMATION, "Course saved successfully!").show();
-            clear();
-            loadAll();
-        }else{
+        if (isValied()){
+            boolean isSave = courseBO.save(courseDTO);
+
+            if (isSave) {
+                new Alert(Alert.AlertType.CONFIRMATION, "Course saved successfully!").show();
+                clear();
+                loadAll();
+            }
+        }
+        else{
             new Alert(Alert.AlertType.ERROR, "Course not saved successfully!").show();
         }
 
@@ -190,13 +195,16 @@ public class CourseController {
             double C_FEE = Double.parseDouble(txtCourseFee.getText());
 
             CourseDTO courseDTO = new CourseDTO(C_ID,C_NAME,C_Duration,C_FEE);
-            boolean isSave = courseBO.update(courseDTO);
 
-            if (isSave) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Course Update successfully!").show();
-                clear();
-                loadAll();
-            }else{
+            if (isValied()){boolean isSave = courseBO.update(courseDTO);
+
+                if (isSave) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Course Update successfully!").show();
+                    clear();
+                    loadAll();
+                }
+            }
+            else{
                 new Alert(Alert.AlertType.ERROR, "Course not Update successfully!").show();
             }
 
@@ -209,5 +217,26 @@ public class CourseController {
         lblCourseID.setText(code);
     }
 
+    public boolean isValied(){
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtProgramName)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.NUMBER,txtCourseFee)) return false;
+
+        return true;
+    }
+
+    @FXML
+    void Course_Fee(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.NUMBER,txtCourseFee);
+    }
+
+    @FXML
+    void Duration(KeyEvent event) {
+
+    }
+
+    @FXML
+    void Programme_Name(KeyEvent event) {
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtProgramName);
+    }
 
 }
