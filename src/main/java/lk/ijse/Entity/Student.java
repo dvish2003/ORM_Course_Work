@@ -25,6 +25,10 @@ public class Student {
     @ManyToOne
     private User user;
 
+    /*public String getUser_id() {
+        return user != null ? user.getUser_id() : null;
+    }*/
+
 
 
 

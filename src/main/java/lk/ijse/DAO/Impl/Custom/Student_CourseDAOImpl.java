@@ -24,13 +24,24 @@ public class Student_CourseDAOImpl implements Student_CourseDAO {
 
     @Override
     public boolean update(Student_Course entity) throws Exception {
-        return false;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction tx = session.beginTransaction();
+        session.update(entity);
+        tx.commit();
+        session.close();
+        return true;
     }
 
     @Override
     public boolean delete(String ID) throws Exception {
-        return false;
-    }
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction tx = session.beginTransaction();
+        Student_Course student_course = new Student_Course();
+        student_course.setStudent_course_id(ID);
+        session.delete(student_course);
+        tx.commit();
+        session.close();
+        return true;     }
 
     @Override
     public List<Student_Course> getAll() throws SQLException, ClassNotFoundException {

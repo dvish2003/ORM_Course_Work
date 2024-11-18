@@ -1,5 +1,6 @@
 package lk.ijse.Controllers;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,31 +49,16 @@ public class StudentRegisterController {
     private ComboBox<String> cmbStudentPhoneNumber;
 
     @FXML
-    private TableColumn<?, ?> colCourseId;
-
-    @FXML
-    private TableColumn<?, ?> colCourseName;
+    private TableColumn<Student_CourseDTO, String> colCourseId;
 
     @FXML
     private TableColumn<?, ?> colDate;
 
     @FXML
-    private TableColumn<?, ?> colFee;
-
-    @FXML
-    private TableColumn<?, ?> colPaymentId;
-
-    @FXML
-    private TableColumn<?, ?> colPhone;
-
-    @FXML
     private TableColumn<?, ?> colStudentCourseId;
 
     @FXML
-    private TableColumn<?, ?> colStudentId;
-
-    @FXML
-    private TableColumn<?, ?> colStudentName;
+    private TableColumn<Student_CourseDTO, String> colStudentId;
 
     @FXML
     private Label lblCourseID;
@@ -170,8 +156,18 @@ public class StudentRegisterController {
 
     private void SetCellValue() {
         colStudentCourseId.setCellValueFactory(new PropertyValueFactory<>("student_course_id"));
-        colStudentId.setCellValueFactory(new PropertyValueFactory<>("student"));
-        colCourseId.setCellValueFactory(new PropertyValueFactory<>("course"));
+        colStudentId.setCellValueFactory(cellData -> {
+            Student_CourseDTO sc = cellData.getValue();
+            return new SimpleStringProperty(
+                    sc.getStudent() != null ? sc.getStudent().getStu_id() : "N/A"
+            );
+        });
+        colCourseId.setCellValueFactory(cellData -> {
+            Student_CourseDTO sc = cellData.getValue();
+            return new SimpleStringProperty(
+                    sc.getCourse() != null ? sc.getCourse().getCourse_name() : "N/A"
+            );
+        });
         colDate.setCellValueFactory(new PropertyValueFactory<>("registration_date"));
     }
 
@@ -235,6 +231,7 @@ public class StudentRegisterController {
 
         boolean isRegister = StudentRegisterBOImpl.StudentRegisterPlace(studentRegisterPlaceDTO);
         if (isRegister) {
+            LoadAllData();
             clear();
             new Alert(Alert.AlertType.CONFIRMATION, "Successfully Registered").show();
         } else {
@@ -260,13 +257,78 @@ public class StudentRegisterController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        String S_id = lblStudentCourseId1.getText();
+        try {
+            boolean isDeleted = studentCourseBO.delete(S_id);
+            if (isDeleted) {
+                new Alert(Alert.AlertType.CONFIRMATION, "deleted successfully!").show();
+                clear();
+                LoadAllData();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Failed to delete!").show();
+            }
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "An error occurred: " + e.getMessage()).show();
+        }
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
+    void btnUpdateOnAction(ActionEvent event) throws Exception {
+        String contact = cmbStudentPhoneNumber.getValue();
+        String CourseID = lblCourseID.getText();
 
+
+        Student studentDTO = studentBO.searchByContact(contact);
+        if (studentDTO == null) {
+            new Alert(Alert.AlertType.WARNING, "Student not found!").show();
+            return;
+        }
+        StudentDTO student = new StudentDTO(
+                studentDTO.getStu_id(),
+                studentDTO.getStu_name(),
+                studentDTO.getStu_phone(),
+                studentDTO.getStu_email(),
+                studentDTO.getStu_address(),
+                new UserDTO()
+        );
+
+
+        Course courseDTO = courseBO.searchById(CourseID);
+        if (courseDTO == null) {
+            new Alert(Alert.AlertType.WARNING, "Course not found!").show();
+            return;
+        }
+        CourseDTO course = new CourseDTO(
+                courseDTO.getCourse_id(),
+                courseDTO.getCourse_name(),
+                courseDTO.getDuration(),
+                courseDTO.getCourse_fee()
+        );
+
+        String Student_courseID = lblStudentCourseId1.getText();
+        String PaymentID = lblPaymentId1.getText();
+        double Fee = Double.parseDouble(lblFee1.getText());
+        Date date = Date.valueOf(lblDate1.getText());
+
+        Student_CourseDTO studentCourseDTO = new Student_CourseDTO(Student_courseID, student, course, date);
+        PaymentDTO paymentDTO = new PaymentDTO(PaymentID, date, Fee, studentCourseDTO);
+
+/*
+        StudentRegisterPlaceDTO studentRegisterPlaceDTO = new StudentRegisterPlaceDTO(studentCourseDTO, paymentDTO);
+*/
+
+        boolean isUpdate = paymentBO.update(paymentDTO);
+        boolean isUpdate_SC = studentCourseBO.update(studentCourseDTO);
+        if (isUpdate && isUpdate_SC) {
+            clear();
+            LoadAllData();
+            new Alert(Alert.AlertType.CONFIRMATION, "Successfully Update").show();
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Unsuccessful! Update").show();
+        }
     }
+
+
 
     @FXML
     void cmbCourseOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {

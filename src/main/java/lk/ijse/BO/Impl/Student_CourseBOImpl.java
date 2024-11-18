@@ -43,12 +43,31 @@ public class Student_CourseBOImpl implements Student_CourseBO {
 
     @Override
     public boolean update(Student_CourseDTO dto) throws Exception {
-        return false;
-    }
+        return studentCourseDAO.update(new Student_Course(
+                dto.getStudent_course_id(),
+                new Student(
+                        dto.getStudent().getStu_id(),
+                        dto.getStudent().getStu_name(),
+                        dto.getStudent().getStu_phone(),
+                        dto.getStudent().getStu_email(),
+                        dto.getStudent().getStu_address(),
+                        new ArrayList<>(),
+                        new User()
+                ),
+                new Course(
+                        dto.getCourse().getCourse_id(),
+                        dto.getCourse().getCourse_name(),
+                        dto.getCourse().getDuration(),
+                        dto.getCourse().getCourse_fee(),
+                        new ArrayList<>()
+                ),
+                dto.getRegistration_date(),
+                new ArrayList<>()
+        ));    }
 
     @Override
     public boolean delete(String ID) throws Exception {
-        return false;
+        return studentCourseDAO.delete(ID);
     }
     @Override
     public List<Student_CourseDTO> getAll() throws SQLException, ClassNotFoundException {

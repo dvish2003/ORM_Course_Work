@@ -1,5 +1,6 @@
 package lk.ijse.Controllers;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +29,7 @@ public class StudentController {
     @FXML
     private ComboBox cmbUser;
     @FXML
-    private TableColumn colUserID;
+    private TableColumn <StudentDTO,String> colUserID;
     @FXML
     private Button btnAdd;
 
@@ -120,7 +121,8 @@ public class StudentController {
                         studentDTO.getStu_phone(),
                         studentDTO.getStu_email(),
                         studentDTO.getStu_address(),
-                         new UserDTO( studentDTO.getUser().getUser_id(),
+                         new UserDTO(
+                                 studentDTO.getUser().getUser_id(),
                                  studentDTO.getUser().getUsername(),
                                  studentDTO.getUser().getAddress(),
                                  studentDTO.getUser().getUser_phone(),
@@ -128,6 +130,7 @@ public class StudentController {
                                  studentDTO.getUser().getPosition(),
                                  studentDTO.getUser().getPassword())
                 );
+
 
                 obList.add(tm);
             }
@@ -141,13 +144,20 @@ public class StudentController {
     }
 
     private void setCellValueFactory() {
-colAddress.setCellValueFactory(new PropertyValueFactory<>("stu_address"));
-colEmail.setCellValueFactory(new PropertyValueFactory<>("stu_email"));
-colName.setCellValueFactory(new PropertyValueFactory<>("stu_name"));
-colPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("stu_phone"));
-colStudentID.setCellValueFactory(new PropertyValueFactory<>("stu_id"));
-colUserID.setCellValueFactory(new PropertyValueFactory<>("user"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("stu_address"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("stu_email"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("stu_name"));
+        colPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("stu_phone"));
+        colStudentID.setCellValueFactory(new PropertyValueFactory<>("stu_id"));
+
+        colUserID.setCellValueFactory(cellData -> {
+            StudentDTO student = cellData.getValue();
+            return new SimpleStringProperty(
+                    student.getUser() != null ? student.getUser().getUser_id() : "N/A"
+            );
+        });
     }
+
 
     @FXML
     void btnAddOnAction(ActionEvent event) throws Exception {

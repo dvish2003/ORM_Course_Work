@@ -3,11 +3,13 @@ package lk.ijse.DAO.Impl.Custom;
 import lk.ijse.DAO.Impl.PaymentDAO;
 import lk.ijse.Entity.Course;
 import lk.ijse.Entity.Payment;
+import lk.ijse.Entity.Student;
 import lk.ijse.config.FactoryConfiguration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentDAOImpl implements PaymentDAO {
@@ -23,8 +25,12 @@ return true;
 
     @Override
     public boolean update(Payment entity) throws Exception {
-        return false;
-    }
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction tx = session.beginTransaction();
+        session.update(entity);
+        tx.commit();
+        session.close();
+        return true;    }
 
     @Override
     public boolean delete(String ID) throws Exception {
@@ -33,7 +39,13 @@ return true;
 
     @Override
     public List<Payment> getAll() throws SQLException, ClassNotFoundException {
-        return List.of();
+        List<Payment> all = new ArrayList<>();
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        all = session.createQuery("from Payment").list();
+        transaction.commit();
+        session.close();
+        return all;
     }
 
     @Override
