@@ -13,11 +13,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import lk.ijse.BO.*;
 import lk.ijse.BO.Impl.StudentRegisterBOImpl;
+import lk.ijse.BO.Impl.UserBOImpl;
 import lk.ijse.DAO.DAOFactory;
 import lk.ijse.DTO.*;
 import lk.ijse.Entity.Course;
 import lk.ijse.Entity.Payment;
 import lk.ijse.Entity.Student;
+import lk.ijse.Entity.User;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -88,6 +90,7 @@ public class StudentRegisterController {
     StudentBO studentBO = (StudentBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Student);
     PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Payment);
     Student_CourseBO studentCourseBO = (Student_CourseBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Student_Course);
+    UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         LoadAllData();
@@ -124,6 +127,7 @@ public class StudentRegisterController {
         });
 
     }
+
     private void LoadAllData() {
         ObservableList<Student_CourseDTO> obList = FXCollections.observableArrayList();
         try {
@@ -154,6 +158,28 @@ public class StudentRegisterController {
     }
 
 
+    /*Access denn security ekak danamw*/
+    public void UserID(String ID) throws SQLException, ClassNotFoundException {
+        String UserID = ID;
+        User user = userBO.searchByIdUser(UserID);
+        String position = user.getPosition();
+
+        if (position.equals("Admin")) {
+            btnBack.setDisable(false);
+            btnClear.setDisable(false);
+            btnAdd.setDisable(true);
+            btnUpdate.setDisable(true);
+            btnDelete.setDisable(true);
+
+        } else if (position.equals("Admissions Coordinator")) {
+            btnAdd.setDisable(false);
+            btnUpdate.setDisable(false);
+            btnDelete.setDisable(false);
+            btnBack.setDisable(false);
+            btnClear.setDisable(false);
+        }
+    }
+
     private void SetCellValue() {
         colStudentCourseId.setCellValueFactory(new PropertyValueFactory<>("student_course_id"));
         colStudentId.setCellValueFactory(cellData -> {
@@ -172,11 +198,11 @@ public class StudentRegisterController {
     }
 
     private void generateNextId() throws SQLException, ClassNotFoundException {
-       String PayID = paymentBO.generateNextId();
-       lblPaymentId1.setText(PayID);
+        String PayID = paymentBO.generateNextId();
+        lblPaymentId1.setText(PayID);
 
-       String Student_course = studentCourseBO.generateNextId();
-       lblStudentCourseId1.setText(Student_course);
+        String Student_course = studentCourseBO.generateNextId();
+        lblStudentCourseId1.setText(Student_course);
 
 
     }
@@ -241,7 +267,7 @@ public class StudentRegisterController {
 
     @FXML
     void btnClearOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
-         clear();
+        clear();
     }
 
     private void clear() throws SQLException, ClassNotFoundException {
@@ -329,23 +355,22 @@ public class StudentRegisterController {
     }
 
 
-
     @FXML
     void cmbCourseOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
         String CourseName = cmbCourseName.getValue();
- try {
-     Course course = courseBO.searchByName(CourseName);
-     if (course != null){
-         lblCourseID.setText(course.getCourse_id());
-         lblFee1.setText(String.valueOf(course.getCourse_fee()));
-         lblDuration.setText(course.getDuration());
+        try {
+            Course course = courseBO.searchByName(CourseName);
+            if (course != null) {
+                lblCourseID.setText(course.getCourse_id());
+                lblFee1.setText(String.valueOf(course.getCourse_fee()));
+                lblDuration.setText(course.getDuration());
 
-     } else {
-         lblCourseID.setText("Not Found ");
-     }
- } catch (Exception e) {
-     throw new RuntimeException(e);
- }
+            } else {
+                lblCourseID.setText("Not Found ");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -354,7 +379,7 @@ public class StudentRegisterController {
         String StudentContct = cmbStudentPhoneNumber.getValue();
         try {
             Student student = studentBO.searchByContact(StudentContct);
-            if (student != null){
+            if (student != null) {
                 lblStudentID.setText(student.getStu_id());
                 lblStudentName1.setText(student.getStu_name());
 
@@ -365,6 +390,7 @@ public class StudentRegisterController {
             throw new RuntimeException(e);
         }
     }
+
     private void getCourseIds() throws ClassNotFoundException {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
@@ -378,6 +404,7 @@ public class StudentRegisterController {
             throw new RuntimeException(e);
         }
     }
+
     private void getStudentIds() throws ClassNotFoundException {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {

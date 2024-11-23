@@ -15,6 +15,7 @@ import lk.ijse.BO.BOFactory;
 import lk.ijse.BO.Impl.UserBOImpl;
 import lk.ijse.BO.UserBO;
 import lk.ijse.DTO.UserDTO;
+import lk.ijse.Entity.User;
 import lk.ijse.util.PasswordEncrypt;
 import lk.ijse.util.PasswordVerifier;
 import lk.ijse.util.Regex.Regex;
@@ -80,7 +81,7 @@ public class UserController {
     @FXML
     private TextField txtPhone;
 
-UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
+    UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         setCellValueFactory();
@@ -99,6 +100,29 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
             }
         });
     }
+
+
+    /*Access denn security ekak danamw*/
+    public void UserID(String ID) throws SQLException, ClassNotFoundException {
+        User user = userBO.searchByIdUser(ID);
+        String position = user.getPosition();
+
+        if ("Admin".equals(position)) {
+            btnBack.setDisable(false);
+            btnClear.setDisable(false);
+            btnAdd.setDisable(true);
+            btnUpdate.setDisable(true);
+            btnDelete.setDisable(true);
+        } else if ("Admissions Coordinator".equals(position)) {
+            btnAdd.setDisable(false);
+            btnUpdate.setDisable(false);
+            btnDelete.setDisable(false);
+            btnBack.setDisable(false);
+            btnClear.setDisable(false);
+        }
+    }
+
+
     private void generateNextUserId() throws SQLException, ClassNotFoundException {
         String code = userBO.generateNextId();
         UserID.setText(code);
@@ -115,13 +139,14 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
 
     }
 
+
     private void loadAll() {
         ObservableList<UserDTO> obList = FXCollections.observableArrayList();
         try {
             List<UserDTO> userDTOList = userBO.getAll();
             for (UserDTO userDTO : userDTOList) {
                 UserDTO tm = new UserDTO(
-                       userDTO.getUser_id(),
+                        userDTO.getUser_id(),
                         userDTO.getUsername(),
                         userDTO.getAddress(),
                         userDTO.getUser_phone(),
@@ -154,24 +179,24 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
 
             String encryptedPassword = PasswordEncrypt.hashPassword(password);
 
-            if (isValied()){
-            if (PasswordVerifier.verifyPassword(password, encryptedPassword)) {
-                UserDTO userDTO = new UserDTO(id, name, address, phone, email, position, encryptedPassword);
+            if (isValied()) {
+                if (PasswordVerifier.verifyPassword(password, encryptedPassword)) {
+                    UserDTO userDTO = new UserDTO(id, name, address, phone, email, position, encryptedPassword);
 
 
-    boolean isSaved = userBO.save(userDTO);
-    if (isSaved) {
-        new Alert(Alert.AlertType.CONFIRMATION, "User saved successfully!").show();
-        clear();
-        loadAll();
-    }
-    } else {
-        new Alert(Alert.AlertType.ERROR, "User not saved successfully!").show();
-    }
-} else {
-    new Alert(Alert.AlertType.ERROR, "Password verification failed!").show();
+                    boolean isSaved = userBO.save(userDTO);
+                    if (isSaved) {
+                        new Alert(Alert.AlertType.CONFIRMATION, "User saved successfully!").show();
+                        clear();
+                        loadAll();
+                    }
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "User not saved successfully!").show();
+                }
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Password verification failed!").show();
 
-}
+            }
 
         } catch (Exception e) {
 
@@ -197,7 +222,7 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
 
     @FXML
     void btnClearOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
-    clear();
+        clear();
 
     }
 
@@ -241,19 +266,19 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
             String password = txtPassword.getText();
 
             String encryptedPassword = PasswordEncrypt.hashPassword(password);
-            if (isValied()){if (PasswordVerifier.verifyPassword(password, encryptedPassword)) {
-                UserDTO userDTO = new UserDTO(id, name, address, phone, email, position, encryptedPassword);
+            if (isValied()) {
+                if (PasswordVerifier.verifyPassword(password, encryptedPassword)) {
+                    UserDTO userDTO = new UserDTO(id, name, address, phone, email, position, encryptedPassword);
 
 
-                boolean isUpdate = userBO.update(userDTO);
-                if (isUpdate) {
-                    new Alert(Alert.AlertType.CONFIRMATION, "User Update successfully!").show();
-                    clear();
-                    loadAll();
+                    boolean isUpdate = userBO.update(userDTO);
+                    if (isUpdate) {
+                        new Alert(Alert.AlertType.CONFIRMATION, "User Update successfully!").show();
+                        clear();
+                        loadAll();
 
-                }
-            }
-             else {
+                    }
+                } else {
                     new Alert(Alert.AlertType.ERROR, "User not Update successfully!").show();
                 }
             } else {
@@ -271,30 +296,30 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
     }
 
 
-    public boolean isValied(){
-        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtName)) return false;
-        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.ADDRESS,txtAddress)) return false;
-        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.EMAIL,txtEmail)) return false;
-        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.CONTACT,txtPhone)) return false;
+    public boolean isValied() {
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME, txtName)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.ADDRESS, txtAddress)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.EMAIL, txtEmail)) return false;
+        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.CONTACT, txtPhone)) return false;
 
         return true;
     }
 
     @FXML
     void Address(KeyEvent event) {
-        Regex.setTextColor(lk.ijse.util.Regex.TextField.ADDRESS,txtAddress);
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.ADDRESS, txtAddress);
 
     }
 
     @FXML
     void Email(KeyEvent event) {
-        Regex.setTextColor(lk.ijse.util.Regex.TextField.EMAIL,txtEmail);
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.EMAIL, txtEmail);
 
     }
 
     @FXML
     void Name(KeyEvent event) {
-        Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtName);
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME, txtName);
     }
 
     @FXML
@@ -304,6 +329,6 @@ UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.Use
 
     @FXML
     void Phone(KeyEvent event) {
-        Regex.setTextColor(lk.ijse.util.Regex.TextField.CONTACT,txtPhone);
+        Regex.setTextColor(lk.ijse.util.Regex.TextField.CONTACT, txtPhone);
     }
 }

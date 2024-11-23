@@ -13,7 +13,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import lk.ijse.BO.BOFactory;
 import lk.ijse.BO.CourseBO;
+import lk.ijse.BO.Impl.UserBOImpl;
+import lk.ijse.BO.UserBO;
 import lk.ijse.DTO.CourseDTO;
+import lk.ijse.Entity.User;
 import lk.ijse.util.Regex.Regex;
 
 import java.sql.SQLException;
@@ -64,6 +67,7 @@ public class CourseController {
     private TextField txtProgramName;
 
     CourseBO courseBO = (CourseBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Course);
+    UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         setCellValueFactory();
@@ -80,6 +84,27 @@ public class CourseController {
 
             }
         });
+    }
+    /*Access denn security ekak danamw*/
+    public void UserID(String ID) throws SQLException, ClassNotFoundException {
+        String UserID = ID;
+        User user = userBO.searchByIdUser(UserID);
+        String position = user.getPosition();
+
+        if (position.equals("Admin")) {
+            btnBack.setDisable(false);
+            btnClear.setDisable(false);
+            btnAdd.setDisable(true);
+            btnUpdate.setDisable(true);
+            btnDelete.setDisable(true);
+
+        } else if (position.equals("Admissions Coordinator")) {
+            btnAdd.setDisable(false);
+            btnUpdate.setDisable(false);
+            btnDelete.setDisable(false);
+            btnBack.setDisable(false);
+            btnClear.setDisable(false);
+        }
     }
 
     private void setCellValueFactory() {

@@ -43,17 +43,19 @@ public class LoginController {
         User user = userDAO.searchByUsername(username);
 
         if (user != null) {
-
             if (PasswordVerifier.verifyPassword(password, user.getPassword())) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Login successful!").show();
-
-
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/DashBoard.fxml"));
                 Parent root = loader.load();
+
+                DashBoardController dashBoardController = loader.getController();
+                dashBoardController.setUserId(user.getUser_id());
+
                 Stage stage = (Stage) btnLogin.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.centerOnScreen();
                 stage.show();
+
             } else {
                 new Alert(Alert.AlertType.ERROR, "Invalid password. Please try again.").show();
             }
