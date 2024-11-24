@@ -16,10 +16,12 @@ import lk.ijse.BO.Impl.UserBOImpl;
 import lk.ijse.BO.StudentBO;
 import lk.ijse.BO.UserBO;
 import lk.ijse.DAO.DAOFactory;
+import lk.ijse.DAO.Impl.LoginDAO;
 import lk.ijse.DAO.Impl.StudentDAO;
 import lk.ijse.DAO.Impl.UserDAO;
 import lk.ijse.DTO.StudentDTO;
 import lk.ijse.DTO.UserDTO;
+import lk.ijse.Entity.Login;
 import lk.ijse.Entity.User;
 import javafx.scene.input.KeyEvent;
 import lk.ijse.util.Regex.Regex;
@@ -86,12 +88,14 @@ public class StudentController {
     UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
     UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.User);
     StudentDAO studentDAO = (StudentDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.Student);
+    LoginDAO loginDAO = (LoginDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.Login);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         setCellValueFactory();
         loadAll();
         generateNextId();
         getIds();
+        lastLoginID();
 
        /* lblUserID(id);*/
 
@@ -108,6 +112,12 @@ public class StudentController {
         });
     }
 
+    /*login table eke log una last kenage user id ek aragannw*/
+    private void lastLoginID() throws SQLException, ClassNotFoundException {
+        Login login = loginDAO.getLastLogin();
+        UserID(login.getUserID());
+
+    }
     /*Access denn security ekak danamw*/
     public void UserID(String ID) throws SQLException, ClassNotFoundException {
         String UserID = ID;

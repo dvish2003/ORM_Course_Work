@@ -1,6 +1,7 @@
 package lk.ijse.config;
 
 import lk.ijse.Entity.*;
+import lk.ijse.Entity.Login;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -27,6 +28,7 @@ public class FactoryConfiguration {
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Payment.class);
         configuration.addAnnotatedClass(Student_Course.class);
+        configuration.addAnnotatedClass(Login.class);
 
         sessionFactory = configuration.buildSessionFactory();
     }

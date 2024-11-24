@@ -15,7 +15,10 @@ import lk.ijse.BO.BOFactory;
 import lk.ijse.BO.CourseBO;
 import lk.ijse.BO.Impl.UserBOImpl;
 import lk.ijse.BO.UserBO;
+import lk.ijse.DAO.DAOFactory;
+import lk.ijse.DAO.Impl.LoginDAO;
 import lk.ijse.DTO.CourseDTO;
+import lk.ijse.Entity.Login;
 import lk.ijse.Entity.User;
 import lk.ijse.util.Regex.Regex;
 
@@ -68,11 +71,13 @@ public class CourseController {
 
     CourseBO courseBO = (CourseBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Course);
     UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
+    LoginDAO loginDAO = (LoginDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.Login);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         setCellValueFactory();
         loadAll();
         generateNextId();
+        lastLoginID();
 
 
         tblCourse.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -84,6 +89,13 @@ public class CourseController {
 
             }
         });
+    }
+
+    /*login table eke log una last kenage user id ek aragannw*/
+    private void lastLoginID() throws SQLException, ClassNotFoundException {
+        Login login = loginDAO.getLastLogin();
+        UserID(login.getUserID());
+
     }
     /*Access denn security ekak danamw*/
     public void UserID(String ID) throws SQLException, ClassNotFoundException {

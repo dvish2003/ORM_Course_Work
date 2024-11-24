@@ -14,7 +14,10 @@ import javafx.stage.Stage;
 import lk.ijse.BO.BOFactory;
 import lk.ijse.BO.Impl.UserBOImpl;
 import lk.ijse.BO.UserBO;
+import lk.ijse.DAO.DAOFactory;
+import lk.ijse.DAO.Impl.LoginDAO;
 import lk.ijse.DTO.UserDTO;
+import lk.ijse.Entity.Login;
 import lk.ijse.Entity.User;
 import lk.ijse.util.PasswordEncrypt;
 import lk.ijse.util.PasswordVerifier;
@@ -82,11 +85,13 @@ public class UserController {
     private TextField txtPhone;
 
     UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
+    LoginDAO loginDAO = (LoginDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.Login);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         setCellValueFactory();
         loadAll();
         generateNextUserId();
+        lastLoginID();
 
         tblUsers.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -100,8 +105,12 @@ public class UserController {
             }
         });
     }
+    /*login table eke log una last kenage user id ek aragannw*/
+    private void lastLoginID() throws SQLException, ClassNotFoundException {
+        Login login = loginDAO.getLastLogin();
+        UserID(login.getUserID());
 
-
+    }
     /*Access denn security ekak danamw*/
     public void UserID(String ID) throws SQLException, ClassNotFoundException {
         User user = userBO.searchByIdUser(ID);

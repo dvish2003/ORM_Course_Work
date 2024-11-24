@@ -6,10 +6,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import lk.ijse.DAO.DAOFactory;
+import lk.ijse.DAO.Impl.LoginDAO;
+import lk.ijse.Entity.Login;
+
+import java.sql.SQLException;
 
 public class DashBoardController {
 
+    public Label LblUserID;
     @FXML
     private Button btnCourse;
     @FXML
@@ -23,21 +30,23 @@ public class DashBoardController {
     @FXML
     private Button btnUsers;
 
-    private String userId;
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    LoginDAO loginDAO = (LoginDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.Login);
+    public void initialize() throws SQLException, ClassNotFoundException {
+        lastLoginID();
     }
+
+    private void lastLoginID() {
+        Login login = loginDAO.getLastLogin();
+        System.out.println(login.getUserID());
+        LblUserID.setText(login.getUserID());
+    }
+
 
     @FXML
     void btnCourseOnAction(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/CoursePage.fxml"));
             Parent root = loader.load();
-
-            CourseController courseController = loader.getController();
-            courseController.UserID(userId);
-
             Stage stage = (Stage) btnCourse.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.centerOnScreen();
@@ -80,10 +89,6 @@ public class DashBoardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/StudentPage.fxml"));
             Parent root = loader.load();
-
-            StudentController studentController = loader.getController();
-            studentController.UserID(userId);
-
             Stage stage = (Stage) btnStudent.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.centerOnScreen();
@@ -98,10 +103,6 @@ public class DashBoardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Student_Course.fxml"));
             Parent root = loader.load();
-
-            StudentRegisterController studentRegisterController = loader.getController();
-            studentRegisterController.UserID(userId);
-
             Stage stage = (Stage) btnStudentRegister.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.centerOnScreen();
@@ -116,10 +117,6 @@ public class DashBoardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/User.fxml"));
             Parent root = loader.load();
-
-            UserController userController = loader.getController();
-            userController.UserID(userId);
-
             Stage stage = (Stage) btnUsers.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.centerOnScreen();

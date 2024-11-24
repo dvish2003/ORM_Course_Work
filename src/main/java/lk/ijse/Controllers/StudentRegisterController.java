@@ -15,11 +15,9 @@ import lk.ijse.BO.*;
 import lk.ijse.BO.Impl.StudentRegisterBOImpl;
 import lk.ijse.BO.Impl.UserBOImpl;
 import lk.ijse.DAO.DAOFactory;
+import lk.ijse.DAO.Impl.LoginDAO;
 import lk.ijse.DTO.*;
-import lk.ijse.Entity.Course;
-import lk.ijse.Entity.Payment;
-import lk.ijse.Entity.Student;
-import lk.ijse.Entity.User;
+import lk.ijse.Entity.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -91,6 +89,7 @@ public class StudentRegisterController {
     PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Payment);
     Student_CourseBO studentCourseBO = (Student_CourseBO) BOFactory.getBoFactory().getBo(BOFactory.BoType.Student_Course);
     UserBO userBO = (UserBOImpl) BOFactory.getBoFactory().getBo(BOFactory.BoType.User);
+    LoginDAO loginDAO = (LoginDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DaoType.Login);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         LoadAllData();
@@ -99,6 +98,7 @@ public class StudentRegisterController {
         getStudentIds();
         generateNextId();
         LocalDate();
+        lastLoginID();
 
         tblStudentCourse.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -157,6 +157,12 @@ public class StudentRegisterController {
         }
     }
 
+    /*login table eke log una last kenage user id ek aragannw*/
+    private void lastLoginID() throws SQLException, ClassNotFoundException {
+        Login login = loginDAO.getLastLogin();
+        UserID(login.getUserID());
+
+    }
 
     /*Access denn security ekak danamw*/
     public void UserID(String ID) throws SQLException, ClassNotFoundException {
