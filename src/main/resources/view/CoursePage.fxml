@@ -20,7 +20,7 @@
     <Label fx:id="lblCourseID" layoutX="200.0" layoutY="150.0" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: #bdbdbd; -fx-font-size: 16px;" />
 
     <Label layoutX="50.0" layoutY="220.0" style="-fx-alignment: black; -fx-font-size: 18px;" text="Program Name:" />
-    <TextField fx:id="txtProgramName" layoutX="200.0" layoutY="220.0" prefWidth="300.0" promptText="Enter Program Name" style="-fx-font-size: 16px;" />
+    <TextField fx:id="txtProgramName" layoutX="200.0" layoutY="220.0" onKeyTyped="#Programme_Name" prefWidth="300.0" promptText="Enter Program Name" style="-fx-font-size: 16px;" />
 
     <Label layoutX="50.0" layoutY="290.0" style="-fx-alignment: black; -fx-font-size: 18px;" text="Duration:" />
     <TextField fx:id="txtDuration" layoutX="200.0" layoutY="290.0" prefWidth="300.0" promptText="Enter Duration" style="-fx-font-size: 16px;" />

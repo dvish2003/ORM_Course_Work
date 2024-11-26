@@ -256,14 +256,12 @@ public class CourseController {
 
     public boolean isValied(){
         if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtProgramName)) return false;
-        if (!Regex.setTextColor(lk.ijse.util.Regex.TextField.NUMBER,txtCourseFee)) return false;
-
         return true;
     }
 
     @FXML
     void Course_Fee(KeyEvent event) {
-        Regex.setTextColor(lk.ijse.util.Regex.TextField.NUMBER,txtCourseFee);
+
     }
 
     @FXML
@@ -273,6 +271,7 @@ public class CourseController {
 
     @FXML
     void Programme_Name(KeyEvent event) {
+
         Regex.setTextColor(lk.ijse.util.Regex.TextField.NAME,txtProgramName);
     }
 
