@@ -99,18 +99,16 @@ public class CourseController {
     }
     /*Access denn security ekak danamw*/
     public void UserID(String ID) throws SQLException, ClassNotFoundException {
-        String UserID = ID;
-        User user = userBO.searchByIdUser(UserID);
+        User user = userBO.searchByIdUser(ID);
         String position = user.getPosition();
 
-        if (position.equals("Admin")) {
+        if ("Admissions Coordinator".equals(position)) {
             btnBack.setDisable(false);
             btnClear.setDisable(false);
             btnAdd.setDisable(true);
             btnUpdate.setDisable(true);
             btnDelete.setDisable(true);
-
-        } else if (position.equals("Admissions Coordinator")) {
+        } else if ("Admin".equals(position)) {
             btnAdd.setDisable(false);
             btnUpdate.setDisable(false);
             btnDelete.setDisable(false);

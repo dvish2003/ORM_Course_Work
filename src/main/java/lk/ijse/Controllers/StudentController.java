@@ -120,18 +120,16 @@ public class StudentController {
     }
     /*Access denn security ekak danamw*/
     public void UserID(String ID) throws SQLException, ClassNotFoundException {
-        String UserID = ID;
-        User user = userBO.searchByIdUser(UserID);
+        User user = userBO.searchByIdUser(ID);
         String position = user.getPosition();
 
-        if (position.equals("Admin")) {
+        if ("Admissions Coordinator".equals(position)) {
+            btnAdd.setDisable(false);
+            btnUpdate.setDisable(false);
+            btnDelete.setDisable(false);
             btnBack.setDisable(false);
             btnClear.setDisable(false);
-            btnAdd.setDisable(true);
-            btnUpdate.setDisable(true);
-            btnDelete.setDisable(true);
-
-        } else if (position.equals("Admissions Coordinator")) {
+        } else if ("Admin".equals(position)) {
             btnAdd.setDisable(false);
             btnUpdate.setDisable(false);
             btnDelete.setDisable(false);
@@ -205,8 +203,6 @@ public class StudentController {
 
         User user = userBO.searchByIdUser(UserID);
         UserDTO userDTO = new UserDTO(user.getUser_id(),user.getUsername(),user.getAddress(),user.getUser_phone(),user.getUser_email(),user.getPosition(),user.getPassword());
-
-
         StudentDTO studentDTO = new StudentDTO(S_id,S_Name,phone,Email,Address,userDTO);
 
         if(isValied()){

@@ -91,7 +91,9 @@ public class UserController {
         setCellValueFactory();
         loadAll();
         generateNextUserId();
+/*
         lastLoginID();
+*/
 
         tblUsers.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -116,13 +118,13 @@ public class UserController {
         User user = userBO.searchByIdUser(ID);
         String position = user.getPosition();
 
-        if ("Admin".equals(position)) {
+        if ("Admissions Coordinator".equals(position)) {
             btnBack.setDisable(false);
             btnClear.setDisable(false);
             btnAdd.setDisable(true);
             btnUpdate.setDisable(true);
             btnDelete.setDisable(true);
-        } else if ("Admissions Coordinator".equals(position)) {
+        } else if ("Admin".equals(position)) {
             btnAdd.setDisable(false);
             btnUpdate.setDisable(false);
             btnDelete.setDisable(false);
@@ -186,12 +188,17 @@ public class UserController {
             String position = String.valueOf(cmbPosition.getValue());
             String password = txtPassword.getText();
 
+            /*
+            *       Vishan = dgufguihehiweiogjosjdjgoji
+            *       Vishan = Vishan
+            *       */
             String encryptedPassword = PasswordEncrypt.hashPassword(password);
+
 
             if (isValied()) {
                 if (PasswordVerifier.verifyPassword(password, encryptedPassword)) {
-                    UserDTO userDTO = new UserDTO(id, name, address, phone, email, position, encryptedPassword);
 
+                    UserDTO userDTO = new UserDTO(id, name, address, phone, email, position, encryptedPassword);
 
                     boolean isSaved = userBO.save(userDTO);
                     if (isSaved) {

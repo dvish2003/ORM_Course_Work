@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.DAO.DAOFactory;
 import lk.ijse.DAO.Impl.LoginDAO;
@@ -17,6 +18,9 @@ import java.sql.SQLException;
 public class DashBoardController {
 
     public Label LblUserID;
+    public Label course_count;
+    public Label student_count;
+    public AnchorPane subAnchorPane;
     @FXML
     private Button btnCourse;
     @FXML
@@ -124,5 +128,8 @@ public class DashBoardController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void btnDashboardOnAction(ActionEvent actionEvent) {
     }
 }
